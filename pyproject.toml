@@ -1,0 +1,23 @@
+[project]
+name = "ghost-search"
+version = "0.1.0"
+description = "Find where a username shows up across public profile pages."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "uvicorn>=0.30",
+]
+
+[project.scripts]
+ghost-search = "ghost_search.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.24"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"

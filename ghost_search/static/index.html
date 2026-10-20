@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ghost Search</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M6 26 L14 10 L20 20 L26 6' fill='none' stroke='%23c2562b' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26 L14 10 L20 20 L26 6"/></svg>
+        Ghost Search
+      </a>
+      <p class="tagline">See which public sites a username, email, or phone number is registered on.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <form id="scan-form" class="console" autocomplete="off">
+      <label class="field">
+        <span class="label">Username, email, or phone</span>
+        <input id="username" name="u" required maxlength="320"
+               placeholder="e.g. ada_l, ada@example.com" spellcheck="false" autofocus>
+      </label>
+      <fieldset class="depth">
+        <legend class="label">Follow linked handles</legend>
+        <div class="segmented" role="radiogroup">
+          <label><input type="radio" name="depth" value="0" checked><span>Off</span></label>
+          <label><input type="radio" name="depth" value="1"><span>1 hop</span></label>
+          <label><input type="radio" name="depth" value="2"><span>2 hops</span></label>
+        </div>
+      </fieldset>
+      <button id="go" type="submit" class="primary">Scan</button>
+    </form>
+    <p class="hint">When following is on, handles that a matched profile links to publicly (for example a GitHub profile's X account) are scanned too. Email is checked against Gravatar and Keybase, the only sites with a genuine public lookup-by-email API; phone numbers aren't checked against anything yet, since no site offers a public lookup-by-phone API.</p>
+
+    <section id="status" class="status" hidden>
+      <div class="meter"><div id="meter-fill"></div></div>
+      <p id="status-text" aria-live="polite"></p>
+    </section>
+
+    <section id="results" hidden>
+      <div class="toolbar">
+        <div id="filters" class="chips" role="tablist"></div>
+        <button id="export" type="button" class="ghost">Download JSON</button>
+      </div>
+      <p class="caution">A matching username isn't proof it's the same person. Compare names, photos and links before drawing conclusions.</p>
+      <ol id="found" class="cards"></ol>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    Only public profile pages and public APIs are checked. Results come straight from each site and aren't stored.
+  </footer>
+
+  <dialog id="profile" class="profile" aria-labelledby="pf-site">
+    <form method="dialog" class="pf-close"><button aria-label="Close">×</button></form>
+    <div class="pf-head">
+      <img id="pf-avatar" class="pf-avatar" alt="" referrerpolicy="no-referrer">
+      <div>
+        <p id="pf-site" class="pf-site"></p>
+        <h2 id="pf-name"></h2>
+        <p id="pf-handle" class="handle"></p>
+      </div>
+    </div>
+    <p id="pf-bio" class="bio"></p>
+    <dl id="pf-facts" class="pf-facts"></dl>
+    <h3 id="pf-links-title">Links on this profile</h3>
+    <ul id="pf-links" class="links"></ul>
+    <p id="pf-via" class="via"></p>
+    <div class="pf-actions">
+      <a id="pf-open" class="primary" target="_blank" rel="noopener noreferrer">Open on site</a>
+      <button id="pf-copy" type="button" class="ghost">Copy link</button>
+    </div>
+  </dialog>
+
+  <template id="card-tpl">
+    <li class="card">
+      <div class="card-head">
+        <img class="avatar" alt="" loading="lazy" referrerpolicy="no-referrer">
+        <div class="ident">
+          <span class="site"></span>
+          <a class="handle" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <span class="cat"></span>
+      </div>
+      <p class="name"></p>
+      <p class="bio"></p>
+      <dl class="facts"></dl>
+      <ul class="links"></ul>
+      <p class="via"></p>
+    </li>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
