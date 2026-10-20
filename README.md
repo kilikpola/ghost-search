@@ -33,7 +33,7 @@ Set `GITHUB_TOKEN` to raise GitHub's anonymous limit of 60 requests an hour.
 
 ## Adding a site
 
-Add a `Site(...)` to `ghost-search/sites.py` with a `known` username that exists,
+Add a `Site(...)` to `ghost_search/sites.py` with a `known` username that exists,
 then run `ghost-search selfcheck`. Detection modes:
 
 - `status`: profile URL returns 200, missing user returns 404
